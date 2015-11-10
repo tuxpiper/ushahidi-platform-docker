@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec /usr/bin/php-fpm -O -R -F -y /var/www/docker/php-fpm.conf
+exec /usr/bin/php-fpm -O -R -F -y /root/docker/php-fpm.conf

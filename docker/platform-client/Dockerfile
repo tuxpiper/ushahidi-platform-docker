@@ -1,4 +1,5 @@
 FROM node:0.12
+MAINTAINER David Losada Carballo "davidlosada@ushahidi.com"
 
 RUN apt-get update && apt-get install -y rsync && \
     apt-get clean && \

@@ -1,8 +1,20 @@
 mysql:
   image: tuxpiper/ushahidi-platform-mysql:latest
+  environment:
+    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-default123}
+    MYSQL_DATABASE: ${MYSQL_DATABASE:-ushahidi}
+    MYSQL_USER: ${MYSQL_USER:-ushahidi}
+    MYSQL_PASSWORD: ${MYSQL_USER:-ushahidi}
 api:
   image: tuxpiper/ushahidi-platform:latest
+  links:
+    - mysql:mysql
+  volumes:
+    - /var/run/php-fpm.sock
 client:
   image: tuxpiper/ushahidi-platform-client:latest
 nginx:
   image: tuxpiper/ushahidi-platform-nginx:latest
+  links:
+    - client:client
+    - api:api

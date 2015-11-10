@@ -18,4 +18,6 @@ WORKDIR /var/www
 
 RUN ./bin/update --no-migrate --no-interaction
 
-CMD [ "/bin/bash", "/var/www/docker/run-fpm.sh" ]
+COPY docker /root/docker
+
+CMD [ "/bin/bash", "/root/docker/run-fpm.sh" ]

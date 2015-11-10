@@ -38,7 +38,9 @@ pushd $temp_image_dir
 rm -f www/.gitignore
 
 cat > Dockerfile <<EOF
-FROM busybox
+FROM tianon/true
+MAINTAINER David Losada Carballo "davidlosada@ushahidi.com"
+
 ADD www /var/app
 EOF
 

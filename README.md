@@ -15,7 +15,9 @@ Supported systems:
 
 Not yet supported, but it may be possible to make it work:
 
-* Windows (bash required, Docker Toolbox recommended)
+* Windows
+  * cygwin required with bash and standard unix tools
+  * Docker Toolbox recommended
 
 ## Run it
 
@@ -23,8 +25,8 @@ If all you want to do is try out the Ushahidi platform, please run
 
     ./ush-docker.sh run
 
-This will download docker images (we've made them super small for you) and
-set them running.
+This will download docker images and set them running. We've made the images
+super small for you, the total download shouldn't be more than 200 MB.
 
 ## Develop on it
 

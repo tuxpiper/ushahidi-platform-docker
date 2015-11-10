@@ -10,4 +10,4 @@ if [ -z "$DOCKER_CERT_PATH" ]; then
 fi	
 
 docker-compose build
-docker-compose run builder /usr/local/bin/build-image.sh $1
+docker-compose run --rm builder /usr/local/bin/build-image.sh $1

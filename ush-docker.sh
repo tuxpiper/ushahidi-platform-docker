@@ -54,11 +54,11 @@ prep_build_tree() {
 }
 
 build_mysql() {
-  ( cd mysql && docker build -t tuxpiper/ushahidi-platform-mysql:latest . )
+  ( cd docker/mysql && docker build -t tuxpiper/ushahidi-platform-mysql:latest . )
 }
 
 build_nginx() {
-  ( cd nginx && docker build -t tuxpiper/ushahidi-platform-nginx:latest . ) 
+  ( cd docker/nginx && docker build -t tuxpiper/ushahidi-platform-nginx:latest . ) 
 }
 
 build_platform() {
@@ -79,6 +79,11 @@ build_platform_client() {
   )
 }
 
+generate_compose_file() {
+  f=$BASEDIR/docker/docker-compose.run.yml
+  eval "cat <<< \"$(<$f)\"" > $BASEDIR/docker-compose.yml
+}
+
 # Functions
 
 # Main
@@ -91,6 +96,14 @@ case "$1" in
     build_nginx
     build_platform
     build_platform_client
+    ;;
+  run)
+    generate_compose_file
+    ;;
+  dev)
+    # require a target folder
+    # checkout platform and platform-client
+    # create docker-compose in target folder
     ;;
   *)
     FATAL 1 'wha?'

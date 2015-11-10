@@ -1,13 +1,13 @@
 mysql:
   image: tuxpiper/ushahidi-platform-mysql:latest
 api:
-  build:
+  image: tuxpiper/ushahidi-platform:latest
   links:
     - mysql:mysql
   volumes:
     - /var/run/php-fpm.sock
 client:
-  build:
+  build: tuxpiper/ushahidi-platform-client:latest
 nginx:
   image: tuxpiper/ushahidi-platform-nginx:latest
   links:
