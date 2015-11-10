@@ -1,0 +1,11 @@
+FROM alpine:3.2
+MAINTAINER David Losada Carballo "davidlosada@ushahidi.com"
+
+RUN apk update && \
+    apk add mysql mysql-client && \
+    rm -rf /var/cache/apk/*
+
+COPY my.cnf /etc/mysql/my.cnf
+COPY run.sh /etc/mysql/run.sh
+
+CMD [ "/bin/sh", "/etc/mysql/run.sh" ]

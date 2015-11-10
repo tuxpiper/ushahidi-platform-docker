@@ -1,0 +1,8 @@
+mysql:
+  image: tuxpiper/ushahidi-platform-mysql:latest
+api:
+  image: tuxpiper/ushahidi-platform:latest
+client:
+  image: tuxpiper/ushahidi-platform-client:latest
+nginx:
+  image: tuxpiper/ushahidi-platform-nginx:latest

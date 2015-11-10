@@ -1,0 +1,9 @@
+builder:
+  build: .
+  dockerfile: Dockerfile
+  environment:
+    DOCKER_HOST: ${DOCKER_HOST}
+    DOCKER_TLS_VERIFY: ${DOCKER_TLS_VERIFY}
+  volumes:
+    - ./src:/var/build
+    - ${DOCKER_CERT_PATH}:/root/.docker
