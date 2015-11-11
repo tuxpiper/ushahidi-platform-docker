@@ -8,4 +8,6 @@ RUN apk update && \
 COPY my.cnf /etc/mysql/my.cnf
 COPY run.sh /etc/mysql/run.sh
 
+EXPOSE 3306
+
 CMD [ "/bin/sh", "/etc/mysql/run.sh" ]

@@ -20,4 +20,6 @@ RUN ./bin/update --no-migrate --no-interaction
 
 COPY docker /root/docker
 
+EXPOSE 9000
+
 CMD [ "/bin/bash", "/root/docker/run-fpm.sh" ]

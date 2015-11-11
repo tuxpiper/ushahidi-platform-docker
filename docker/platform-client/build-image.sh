@@ -26,6 +26,9 @@ cd /var/build.local
 sed -i -e 's%git://github.com/%%' -e 's%git+https://github.com/%%' package.json
 
 echo "INFO building app files"
+
+export BACKEND_URL='http://change.me.on.deploy'
+
 /usr/local/bin/npm install
 /usr/local/bin/gulp build
 
