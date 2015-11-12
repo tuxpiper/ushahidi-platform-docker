@@ -2,7 +2,7 @@
 
 Try out or start developing on the Ushahidi Platform without the setup hassle!
 
-Supported systems:
+Works on:
 
 * Linux , requires:
   * Docker Compose
@@ -11,7 +11,7 @@ Supported systems:
 * OS X
   * Docker Toolbox recommended
 
-Not yet supported, but it may be possible to make it work:
+Haven't really tried, but it may be possible to make it work:
 
 * Windows
   * cygwin required with bash and standard unix tools
@@ -22,6 +22,10 @@ Not yet supported, but it may be possible to make it work:
 Although I am involved with Ushahidi, this is not an officially supported
 method for setting up the Platform. If you find a problem with this specific
 installer, please open an issue in this github repo, I'll see what I can do!
+
+The officially supported install methods can be found here:
+
+https://www.ushahidi.com/support/install-ushahidi
 
 ## Run it
 
@@ -35,4 +39,3 @@ super small for you, the total download shouldn't be more than 200 MB.
 ## Develop on it
 
 ... coming soon ...
-
