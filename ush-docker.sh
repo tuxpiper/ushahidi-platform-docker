@@ -80,11 +80,32 @@ build_platform_client() {
 }
 
 generate_compose_file() {
+  # Try to detect host where docker is running, for the URL
+  ENGINE_HOST=`set | grep DOCKER_HOST | grep '=tcp://' | sed -E 's%.*tcp://([0-9\.]+):.*%\1%'`
+  if [ -z "$ENGINE_HOST" ]; then
+    echo "- Not sure what your docker machine is, will assume 'localhost'"
+    ENGINE_HOST=localhost
+  fi
+  CONTAINER_PORT=${PORT:-8000}
+  export ENGINE_HOST CONTAINER_PORT
+  #
+  # Read and patch
   f=$BASEDIR/docker/docker-compose.run.yml
   eval "cat <<< \"$(<$f)\"" > $BASEDIR/docker-compose.yml
 }
 
-# Functions
+ping_instance() {
+  local k=0; while [ "$k" -lt "60" ]; do
+    if curl -f -m 2 http://${ENGINE_HOST}:${CONTAINER_PORT}/api/v3/config/site > /dev/null 2>&1 ; then
+      echo "Instance contacted"
+      break
+    fi
+    k=$((k + 1))
+    sleep 1
+  done
+  echo;
+  [ "$k" -lt "60" ]
+}
 
 # Main
 case "$1" in
@@ -98,14 +119,25 @@ case "$1" in
     build_platform_client
     ;;
   run)
+    echo "- Configuring your environment ..."
     generate_compose_file
-    ;;
-  dev)
-    # require a target folder
-    # checkout platform and platform-client
-    # create docker-compose in target folder
+    echo
+    echo "- Bringing up services ..."
+    docker-compose up -d
+    echo
+    echo "- Waiting for your instance to be available ..."
+    if ping_instance; then
+      echo "Congratulations! You can now access your Ushahidi instance at"
+      echo "  http://${ENGINE_HOST}:${CONTAINER_PORT}"
+      echo
+      echo "The default credentials are admin / admin"
+      echo
+    else
+      echo "Oh no! Something went wrong. Please try another install method from"
+      echo "  https://www.ushahidi.com/support/install-ushahidi"
+    fi
     ;;
   *)
-    FATAL 1 'wha?'
+    FATAL 1 "$0 build|run"
     ;;
 esac

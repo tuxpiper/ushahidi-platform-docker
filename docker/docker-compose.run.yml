@@ -5,16 +5,30 @@ mysql:
     MYSQL_DATABASE: ${MYSQL_DATABASE:-ushahidi}
     MYSQL_USER: ${MYSQL_USER:-ushahidi}
     MYSQL_PASSWORD: ${MYSQL_USER:-ushahidi}
+files:
+  image: tianon/true
+  volumes:
+    - /var/www/application/cache
+    - /var/www/application/logs
+    - /var/www/application/media/uploads
 api:
   image: tuxpiper/ushahidi-platform:latest
   links:
     - mysql:mysql
-  volumes:
-    - /var/run/php-fpm.sock
+  volumes_from:
+    - files
 client:
   image: tuxpiper/ushahidi-platform-client:latest
+  volumes:
+    - /var/app
 nginx:
   image: tuxpiper/ushahidi-platform-nginx:latest
   links:
-    - client:client
     - api:api
+  ports:
+    - ${CONTAINER_PORT}:80
+  environment:
+    USHAHIDI_URL: http://${ENGINE_HOST}:${CONTAINER_PORT}
+  volumes_from:
+    - client
+    - files

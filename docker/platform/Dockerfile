@@ -19,6 +19,7 @@ WORKDIR /var/www
 RUN ./bin/update --no-migrate --no-interaction
 
 COPY docker /root/docker
+COPY docker/platform.ini /etc/php/conf.d/platform.ini
 
 EXPOSE 9000
 

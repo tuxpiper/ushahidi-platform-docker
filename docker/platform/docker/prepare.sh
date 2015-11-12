@@ -18,7 +18,7 @@ k=1; while [ "$k" -lt "60" ]; do
   sleep 1;
   k=$((k + 1))
 done
-sleep 5;
+sleep 1;
 echo
 
 ( cd /var/www && ./bin/update --no-interaction )
