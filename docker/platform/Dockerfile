@@ -1,4 +1,5 @@
 FROM alpine:3.2
+MAINTAINER David Losada Carballo "davidlosada@ushahidi.com"
 
 RUN apk update && \
     apk add curl php-fpm php-openssl php-gd php-json php-phar php-curl \

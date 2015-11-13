@@ -1,3 +1,6 @@
+*WARNING: this project is using unstable versions of Ushahidi, so functionality
+is bound to break sometimes. There will be stable releases in the near future.*
+
 # Docker environments for Ushahidi Platform
 
 Try out or start developing on the Ushahidi Platform without the setup hassle!

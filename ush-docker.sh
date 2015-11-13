@@ -1,6 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
 BASEDIR=`dirname $0`
+
+# Useful environment variables
+#   - ENGINE_FQDN : hostname to reach docker engine and, once it's deployed, the platform
+#   - PORT : port by which the platform should be available
+#   - MYSQL_ROOT_PASSWORD
+#   - MYSQL_DATABASE
+#   - MYSQL_USER
+#   - MYSQL_PASSWORD
 
 #
 
@@ -81,7 +89,10 @@ build_platform_client() {
 
 generate_compose_file() {
   # Try to detect host where docker is running, for the URL
-  ENGINE_HOST=`set | grep DOCKER_HOST | grep '=tcp://' | sed -E 's%.*tcp://([0-9\.]+):.*%\1%'`
+  ENGINE_HOST=${ENGINE_FQDN}
+  if [ -z "$ENGINE_HOST" ]; then
+    ENGINE_HOST=`bash -c set | grep DOCKER_HOST | grep '=tcp://' | sed -E 's%.*tcp://([0-9\.]+):.*%\1%'`
+  fi
   if [ -z "$ENGINE_HOST" ]; then
     echo "- Not sure what your docker machine is, will assume 'localhost'"
     ENGINE_HOST=localhost
