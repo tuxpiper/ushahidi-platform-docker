@@ -4,6 +4,8 @@ builder:
   environment:
     DOCKER_HOST: ${DOCKER_HOST}
     DOCKER_TLS_VERIFY: ${DOCKER_TLS_VERIFY}
+    BUILD_OUT_DIR: /var/build.out
   volumes:
     - ./src:/var/build
+    - ./out:/var/build.out
     - ${DOCKER_CERT_PATH}:/root/.docker

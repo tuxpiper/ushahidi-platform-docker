@@ -9,5 +9,8 @@ if [ -z "$DOCKER_CERT_PATH" ]; then
 	export DOCKER_CERT_PATH='.'
 fi	
 
+PACKAGER=${PACKAGER:-docker}
+
+cp src/package.json .
 docker-compose build
-docker-compose run --rm builder /usr/local/bin/build-image.sh $1
+docker-compose run -e PACKAGER=$PACKAGER --rm builder /usr/local/bin/build-image.sh $1

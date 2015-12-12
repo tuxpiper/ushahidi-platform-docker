@@ -10,6 +10,10 @@ RUN chmod +x /usr/bin/docker
 
 RUN /usr/local/bin/npm install -g gulp@3.9.0 gulp-notify@2.2.0 grunt-cli@0.1.13
 
+WORKDIR /var/build.local
+ADD package.json /var/build.local/package.json
+RUN /usr/local/bin/npm install && rm -fr $HOME/.npm
+
 ADD build-image.sh /usr/local/bin/build-image.sh
 
 CMD [ "/bin/bash", "/usr/local/bin/build-image.sh" ]

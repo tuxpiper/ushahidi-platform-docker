@@ -56,6 +56,8 @@ prep_build_tree() {
   tar -xz -C $BASEDIR/.build/${pkg} -f $BASEDIR/.src/${pkg}.tgz
   # the source will be in "src" folder
   ( cd $BASEDIR/.build/${pkg}; mv $subfolder src )
+  # sometimes an output folder comes handy
+  mkdir $BASEDIR/.build/${pkg}/out
   # copy our docker stuff next to it
   cp -a $BASEDIR/docker/${pkg}/* $BASEDIR/.build/${pkg}
   cp -a $BASEDIR/docker/${pkg}/.[a-zA-Z]* $BASEDIR/.build/${pkg} 
@@ -83,7 +85,7 @@ build_platform() {
 build_platform_client() {
   (
     cd $BASEDIR/.build/platform-client
-    ./build.sh tuxpiper/ushahidi-platform-client:latest
+    ./build.sh $1
   )
 }
 
@@ -127,7 +129,7 @@ case "$1" in
     build_mysql
     build_nginx
     build_platform
-    build_platform_client
+    PACKAGER=docker build_platform_client tuxpiper/ushahidi-platform-client:latest
     ;;
   run)
     echo "- Configuring your environment ..."
@@ -148,7 +150,27 @@ case "$1" in
       echo "  https://www.ushahidi.com/support/install-ushahidi"
     fi
     ;;
+  tarball)
+    # Build single tarball release:
+    #
+    # platform-client-root/
+    #    ...
+    #    api/  <-- platform-client project
+    #
+    fetch_ushahidi
+    prep_build_tree platform
+    prep_build_tree platform-client
+    # build the client
+    PACKAGER=tarball build_platform_client build.tgz
+    [ ! -f $BASEDIR/.build/platform-client/out/build.tgz ] && FATAL 1 "platform-client build failed!"
+    # put together package contents in tarball folder
+    mkdir -p $BASEDIR/.build/tarball/client $BASEDIR/.build/tarball/api
+    tar -C $BASEDIR/.build/tarball/client -xz -f $BASEDIR/.build/platform-client/out/build.tgz
+    cp -pr $BASEDIR/.build/platform/src/* $BASEDIR/.build/tarball/api
+    cp -pr $BASEDIR/docker/tarball/* $BASEDIR/.build/tarball
+    tar -C $BASEDIR/.build/tarball -cz -f $BASEDIR/.build/tarball.tgz .
+    ;;
   *)
-    FATAL 1 "$0 build|run"
+    FATAL 1 "$0 build|run|tarball"
     ;;
 esac
